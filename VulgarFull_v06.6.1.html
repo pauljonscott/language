@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset='utf-8'>
+<title>Vulgar: Language generator</title>
+<head>
+<meta http-equiv="cache-control" content="no-cache" /> 
+<style>
+@import url('https://fonts.googleapis.com/css?family=Cinzel+Decorative');
+@font-face { font-family: Charis; src: url(CharisSILR.ttf); }
+@font-face { font-family: Noto; src: url(NotoSans-Regular.ttf); }
+
+div { font-family: Charis; }
+sc { font-family: Charis; }
+h1 { font-family: 'Cinzel Decorative'; }
+h2, h3, p, w, f { font-family: Charis; color: #444444; }
+r { color: #1D77A8; font-weight: bold; font-family: Charis; }
+mon {font-family: Noto;}
+e {	color: #444444; font-weight: normal; font-family: Charis; }
+
+#header {
+	background-color:white;
+	color:white;
+	text-align:center;
+	padding:5px;
+}
+#section1 {
+	background-color:#DFF9F1;
+	height:30000px;
+	width:500px;
+	float:left;
+	padding:5px; 
+}
+#section {
+	width:800px;
+	float:left;
+	padding:10px; 
+}
+#footer {
+	background-color:black;
+	color:white;
+	clear:both;
+	text-align:center;
+	padding:5px; 
+}
+table, td, th {	
+	border: 1px solid #ddd;
+	text-align: left;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 4px;
+	vertical-align: center;
+}
+
+#nav-header a:link { color: #fff !important; text-decoration: none; }
+#nav-header a:hover { color: #D80036 !important; text-decoration: none; }
+#nav-header a:visited { color: #fff !important; text-decoration: none; }
+
+a:link	{ color: #0092c2; text-decoration: none; }
+a:visited	{ color: #0092c2; text-decoration: none; }
+a:hover	 { color: #D80036; text-decoration: none; }
+
+li:link	{ color: #fff; text-decoration: none; }
+li:visited	{ color: #D80036; text-decoration: none; }
+
+input[type=text] {
+
+	border: 1px solid #c4c4c4;
+	height: 20px;
+	font-size: 16px;
+	padding: 4px;
+	border-radius: 50px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 2px 2px 8px #d9d9d9;
+	-moz-box-shadow: 2px 2px 8px #d9d9d9;
+	-webkit-box-shadow: 2px 2px 8px #d9d9d9;
+}
+
+input[type=text]:focus { 
+	outline: none;
+	border: 1px solid #7bc1f7;
+	box-shadow: 2px 2px 8px #7bc1f7;
+	-moz-box-shadow: 2px 2px 8px #7bc1f7;
+	-webkit-box-shadow: 2px 2px 8px #7bc1f7;
+
+}
+
+
+.button0 {
+	background-color: #D80036; /* blue D80036 */
+	border: none;
+	color: white;
+	padding: 8px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	-webkit-transition-duration: 0.1s; /* Safari */
+	transition-duration: 0.1s;
+	cursor: pointer;
+	border-radius: 25px;
+	font-family: Noto;
+	-moz-box-shadow: 2px 2px 10px rgba(0, 0, 0, .4);
+	-webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, .4);
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, .4);
+	
+}
+.button0:focus {outline:0 !important;}
+
+.button10 {
+	background-color: white;
+	color: black;
+	border: 2px solid #D80036;
+}
+
+.button10:hover {
+	background-color: #D80036;
+	color: white;
+}
+.button10:focus {outline:0 !important;}
+
+.toggle {
+	font-family: Noto;
+	background-color: #ccc;
+	display: inline-block;
+	border-radius: 1.2em;
+	padding: 0.2em 2em 0.2em 0.2em;
+}
+.toggle input {
+	display: none;
+}
+.toggle label {
+	position: relative;
+	transition: transform 0.1s;
+	cursor: pointer;
+	background-color: #999;
+	color: #fff;
+	display: inline-block;
+	padding: 0.25em 1em;
+	border-radius: 1em;
+}
+.toggle input:checked + label {
+	background-color: #D80036;
+	color: #fff;
+	transform: translateX(1.8em);
+}
+
+body { max-width: 1920px; margin: 0px auto; padding: 2% 5%;}
+
+
+#loader {
+	position: fixed;
+	left: 48%;
+	top: 50%;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+	
+}
+
+.cube1, .cube2 {
+	background-color: #D80036;
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	
+	-webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
+	animation: sk-cubemove 1.8s infinite ease-in-out;
+}
+
+.cube2 {
+	-webkit-animation-delay: -0.9s;
+	animation-delay: -0.9s;
+}
+
+@-webkit-keyframes sk-cubemove {
+	25% { -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5) }
+	50% { -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg) }
+	75% { -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5) }
+	100% { -webkit-transform: rotate(-360deg) }
+}
+
+@keyframes sk-cubemove {
+	25% { 
+	transform: translateX(42px) rotate(-90deg) scale(0.5);
+	-webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
+	} 50% { 
+	transform: translateX(42px) translateY(42px) rotate(-179deg);
+	-webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
+	} 50.1% { 
+	transform: translateX(42px) translateY(42px) rotate(-180deg);
+	-webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
+	} 75% { 
+	transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+	-webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+	} 100% { 
+	transform: rotate(-360deg);
+	-webkit-transform: rotate(-360deg);
+	}
+}
+
+#demo {
+	display: none;
+	text-align: left;
+}
+
+ul {
+font-family: Noto;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+	color: #ffffff;
+}
+
+li { float: left; }
+li a { display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none;}
+
+.b {
+	display: list-item;
+	float: none;
+	text-align: left;
+	padding: 1px 1px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) { background-color: #111; }
+
+.active {
+	background-color: #D80036;
+	color: #333 !important;
+}
+
+#nav-header a.active:hover {
+	color: #fff!important;
+}
+
+div#custom-settings {
+	padding: 20px;
+	max-width: 800px;
+	margin: 20px auto;
+	background: #f9f9f9;
+}
+
+div#custom-settings p input {
+	margin-bottom: 10px;
+}
+
+.custom-toggle {
+	text-align: center;
+}
+
+div#main-content {
+	margin-bottom: 80px;
+}
+
+div#vulgar-content {
+	border: 1px solid #e4e4e4;
+	background: #f9f9f9;
+}
+
+div#nav-header h1 {
+	margin: 20px 0 0 0;
+}
+
+
+.edd_download_file_link {
+	background: #f5f5f5;
+}
+
+li.edd_download_file {
+	margin: 0 auto !important;
+	text-align: center;
+	display: block;
+	width: 100%;
+	font-family: 'Cinzel Decorative', cursive;
+}
+
+span.version {
+	display: inline-block;
+	color: #D80036;
+	position: relative;
+	top: -12px;
+	font-family: Charis;
+}
+
+/* Output Styling */
+
+div#lang-full {
+	background: #fafafa;
+	padding: 15px;
+	margin: 0px auto;
+	max-width: 1920px;
+	margin-top: 60px !important;
+	border: 1px solid #D80036;
+}
+
+.head-langname {
+	color: #D80036;
+	text-align: center;
+}
+
+.head-phon, .head-grammar, .head-lexi {
+	color: #D80036;
+	text-align: center;
+}
+
+div#lang-sentence {
+	text-align: center;
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+div#lang-seed {
+	text-align: center;
+	background: #f9f9f9;
+	padding: 10px;
+	margin: 20px auto;
+	border: 1px dashed #D80036;
+}
+
+#lang-seed span {
+	font-weight: bold;
+	color: #D80036;
+
+}
+
+.table-tab {
+	overflow: auto;
+}
+
+div#bigcontab {
+	margin: 0 auto !important;
+	max-width: 1370px;
+	
+}
+
+div#phon-other {
+	display: inline-block;
+	max-width: 50%;
+	min-width: 330px;
+
+}
+
+div#dip-and-info {
+	display: inline-block;
+	vertical-align: top;
+	background: rgba(0,0,0,0.02);
+	padding: 10px;
+	margin-top: 20px;
+
+}
+
+div#vowels {
+	display: inline-block;
+	max-width: 400px;
+	vertical-align: top;
+	background: rgba(0,0,0,0.02);
+	padding: 10px;
+	margin-top: 20px;
+	margin-right: 10px;
+	background: #ffffff;
+	margin-bottom: 20px;
+	text-align: left;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	-webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+}
+
+div#phon-other {
+	display: inline-block;
+	max-width: 50%;
+	min-width: 330px;
+	text-align: left;
+}
+
+#noun-morph, #def-art, #indef-art, #pers-pronouns, #lang-verbs, #lang-der-morph, #syll-struct, #phon-rules {
+	display: inline-block;
+	margin-right: 20px;
+	vertical-align: top;
+	padding: 20px;
+	background: #ffffff;
+	margin-bottom: 20px;
+	text-align: left;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	-webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+}
+
+div#lang-grammar {
+	text-align: center;
+	margin-top: 40px;
+	border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+div#lang-phon {
+	text-align: center;
+}
+
+div#lang-lexi {
+	text-align: left;
+	display: block;
+	margin: 0 auto;
+	padding: 20px;
+	background: #ffffff;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	-webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+	box-shadow: 1px 1px 8px rgba(0, 0, 0, .4);
+}
+
+div#lang-lexi ul {
+	background: rgba(0,0,0,0.0) !important;
+	-moz-column-count: 3;
+	-moz-column-gap: 5px;
+	-webkit-column-count: 3;
+	-webkit-column-gap: 5px;
+	column-count: 3;
+	column-gap: 5px;
+	color: #000 !important;
+}
+
+div#lang-lexi ul li {
+	display: block;
+	float: none;
+	color: #000 !important;
+	min-width: 400px;
+	margin: 0 0 4px 0;
+	border: 1px solid #f5f5f5;
+	padding: 4px;
+	background: #fffff;
+}
+
+@media screen and (max-width: 800px) {
+
+div#lang-lexi ul {
+	background: rgba(0,0,0,0.02) !important;
+	-moz-column-count: 2;
+	-moz-column-gap: 5px;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 5px;
+	column-count: 2;
+	column-gap: 5px;
+}
+
+}
+
+@media screen and (max-width: 600px) {
+
+div#lang-lexi ul {
+	background: rgba(0,0,0,0.02) !important;
+	-moz-column-count: 1;
+	-moz-column-gap: 0px;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0px;
+	column-count: 1;
+	column-gap: 0px;
+}
+
+}
+
+.tri {
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 6px 0 6px 7px;
+border-color: transparent transparent transparent #000000;
+}
+
+.olay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
+.olay:target {
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup {
+	margin: 70px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	width: 43%;
+	position: relative;
+	transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+	margin-top: 0;
+	color: #333;
+	font-family: Charis;
+}
+.popup .close {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #333;
+}
+.popup .close:hover {
+	color: #D80036;
+}
+.popup .content {
+	max-height: 30%;
+	overflow: auto;
+	text-align: left;
+}
+
+.st { cursor: pointer; cursor: hand; }
+
+.q{	content:url("https://vulgarlang.com/q.svg"); height: 16px; width: 16px; }
+.q:hover { content: url("https://vulgarlang.com/qr.svg"); }
+
+.inpo {font-family:'Charis'; font-size:11pt; height:20px;}
+
+/* END Output Styling */
+</style>
+</head>
+
+<body>
+<script language="javascript">
+function toggle() {
+	var ele = document.getElementById("toggleText");
+	var text = document.getElementById("displayText");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "<mon>Show IPA symbols</mon>";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "<mon>Hide IPA symbols</mon>";
+	}
+} 
+
+function toggle2() {
+	var ele2 = document.getElementById("cutomText");
+	if(ele2.style.display == "block") {
+    		ele2.style.display = "none";
+		text.innerHTML = "<mon>Show IPA symbols</mon>";
+  	}
+	else {
+		ele2.style.display = "inline";
+	}
+} 
+
+function toggle3() {
+	var ele = document.getElementById("toggleText3");
+	var text = document.getElementById("displayText3");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "<mon>Show more options</mon>";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "<mon>Show less options</mon>";
+	}
+} 
+
+function sT(text) {
+	var txtarea = document.getElementById("cuscon").value;
+	if (txtarea.length == 0){
+		document.getElementById("cuscon").value = txtarea + text;
+	} else {
+		document.getElementById("cuscon").value = txtarea + ' ' + text;
+	}
+}
+
+function sTD(text) {
+	var txtarea = document.getElementById("cuscon").value;
+	if (txtarea.length == 0){
+		document.getElementById("cuscon").value = '';
+	} else {
+		document.getElementById("cuscon").value = txtarea + text;
+	}
+}
+
+function sTv(text) {
+	var txtarea = document.getElementById("cusvow").value;
+	if (txtarea.length == 0){
+		document.getElementById("cusvow").value = txtarea + text;
+	} else {
+		document.getElementById("cusvow").value = txtarea + ' ' + text;
+	}
+}
+
+function sTvD(text) {
+	var txtarea = document.getElementById("cusvow").value;
+	if (txtarea.length == 0){
+		document.getElementById("cusvow").value = '';
+	} else {
+		document.getElementById("cusvow").value = txtarea + text;
+	}
+}
+
+function pos(text) {
+	var txtarea = document.getElementById("xders").value;
+		document.getElementById("xders").value = txtarea + text;
+}
+
+function ful(wi, mw, mf, wsc) {
+		document.getElementById("wic").value = wi;
+		document.getElementById("mwc").value = mw;
+		document.getElementById("wfc").value = mf;
+		document.getElementById("cusvow2").value = wsc;
+
+}
+
+navigator.sayswho= (function(){
+    var ua= navigator.userAgent, tem,
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    if(M[1]=== 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+})();
+
+function togglec() {
+	location.href = "#error-pop";
+} 
+
+</script>
+<a href="https://www.vulgarlang.com"><font style="font-size: 70px; color:#D80036; font-family: 'Cinzel Decorative', cursive;"><b>V</b></font><font style="color:#000000; font-size: 70px; font-family: 'Cinzel Decorative', cursive;">ÜlgÅr.</font> <font style="color:#000000; font-family: 'Cinzel Decorative', cursive; font-size: 16px;">A language generator</font></a>
+</h1>
+<div id="nav-header">
+<ul>
+  <li><a class="active" href="https://www.vulgarlang.com">Generator</a></li>
+  <li><a href="https://www.vulgarlang.com/how-it-works.html" target="_blank">How it works</a></li>
+  <li><a href="https://www.vulgarlang.com/guide-to-linguistics.html" target="_blank">Guide to linguistics</a></li>
+    <li><a href="https://www.vulgarlang.com/tumblr-dictionary-theme.html" target="_blank">Tumblr Dictionary Theme</a></li>
+</ul>
+</div>
+<div id="main-content">
+<p></p>
+
+<div id="vulgar-content">
+<p><center><button class="button0 button10" onclick="loadything()">Generate new language</button></center>
+
+<div id="custom-settings">
+<div class="custom-toggle"><p><span class="toggle">
+<input type="checkbox" id="customer" />
+<label for="customer">Custom phonemes</label></span>
+<p id="cutomText" style="display: none">Enter phonemes separated by spaces. Use IPA symbols only. <a class="button" href="#phoneme-pop"><img class="q"></a></p>
+<br>
+
+<p><b><mon>Consonants</mon></b>: <input type="text" class="inpo" autocorrect="off" autocapitalize="off" spellcheck="false" id="cuscon" value="" size="65" disabled="disabled"><br>
+<b><mon>Vowels</mon></b>: <input type="text" class="inpo" autocorrect="off" autocapitalize="off" spellcheck="false" id="cusvow" value="" size="65" disabled="disabled"><br><br>
+</div>
+
+<p>
+
+<a id="displayText" href="javascript:toggle();"><mon>Show IPA symbols</mon></a>
+
+<div id="toggleText" style="display: none"><f>Click symbols to add
+<p><b>English consonants:</b> <a onClick="sT('b');" class="st">b</a> <a onClick="sT('d');" class="st">d</a> <a onClick="sT('f');" class="st">f</a> <a onClick="sT('g');" class="st">g</a> <a onClick="sT('h');" class="st">h</a> <a onClick="sT('j');" class="st">j</a> <a onClick="sT('k');" class="st">k</a> <a onClick="sT('l');" class="st">l</a> <a onClick="sT('m');" class="st">m</a> <a onClick="sT('n');" class="st">n</a> <a onClick="sT('ŋ');" class="st">ŋ</a> <a onClick="sT('p');" class="st">p</a> <a onClick="sT('ɹ');" class="st">ɹ</a> <a onClick="sT('s');" class="st">s</a> <a onClick="sT('t');" class="st">t</a> <a onClick="sT('v');" class="st">v</a> <a onClick="sT('w');" class="st">w</a> <a onClick="sT('z');" class="st">z</a> <a onClick="sT('ʃ');" class="st">ʃ</a> <a onClick="sT('ʒ');" class="st">ʒ</a> <a onClick="sT('tʃ');" class="st">tʃ</a> <a onClick="sT('dʒ');" class="st">dʒ</a> <a onClick="sT('θ');" class="st">θ</a> <a onClick="sT('ð');" class="st">ð</a> - <a onClick="sT('b d f g h j k l m n ŋ p ɹ s t v w z ʃ ʒ tʃ dʒ θ ð');" class="st">add all</a>
+ 
+<br><b>English vowels:</b> <a onClick="sTv('ɑ');" class="st">ɑ</a> <a onClick="sTv('æ');" class="st">æ</a> <a onClick="sTv('ɛ');" class="st">ɛ</a> <a onClick="sTv('i');" class="st">i</a> <a onClick="sTv('ɪ');" class="st">ɪ</a> <a onClick="sTv('ɔ');" class="st">ɔ</a> <a onClick="sTv('u');" class="st">u</a> <a onClick="sTv('ʌ');" class="st">ʌ</a> 
+- <a onClick="sTv('ɑ æ ɛ i ɪ ɔ u ʌ');" class="st">add all</a>
+
+<p><b>All consonants:</b> <a onClick="sT('b');" class="st">b</a>
+<a onClick="sT('ɓ');" class="st">ɓ</a>
+<a onClick="sT('β');" class="st">β</a>
+<a onClick="sT('ʙ');" class="st">ʙ</a>
+<a onClick="sT('c');" class="st">c</a>
+<a onClick="sT('ç');" class="st">ç</a>
+<a onClick="sT('d');" class="st">d</a>
+<a onClick="sT('ɖ');" class="st">ɖ</a>
+<a onClick="sT('ɗ');" class="st">ɗ</a>
+<a onClick="sT('ᶑ');" class="st">ᶑ</a>
+<a onClick="sT('dz');" class="st">dz</a>
+<a onClick="sT('dʑ');" class="st">dʑ</a>
+<a onClick="sT('dʒ');" class="st">dʒ</a>
+<a onClick="sT('f');" class="st">f</a>
+<a onClick="sT('ɟ');" class="st">ɟ</a>
+<a onClick="sT('ʄ');" class="st">ʄ</a>
+<a onClick="sT('ɸ');" class="st">ɸ</a> 
+<a onClick="sT('g');" class="st">g</a>
+<a onClick="sT('ɠ');" class="st">ɠ</a>
+<a onClick="sT('ɢ');" class="st">ɢ</a>
+<a onClick="sT('ʛ');" class="st">ʛ</a>
+<a onClick="sT('ɰ');" class="st">ɰ</a>
+<a onClick="sT('h');" class="st">h</a>
+<a onClick="sT('ɦ');" class="st">ɦ</a>
+<a onClick="sT('ħ');" class="st">ħ</a>
+<a onClick="sT('ɧ');" class="st">ɧ</a>
+<a onClick="sT('ɥ');" class="st">ɥ</a>
+<a onClick="sT('ʜ');" class="st">ʜ</a>
+<a onClick="sT('j');" class="st">j</a>
+<a onClick="sT('ʝ');" class="st">ʝ</a>
+<a onClick="sT('k');" class="st">k</a>
+<a onClick="sT('l');" class="st">l</a>
+<a onClick="sT('ɫ');" class="st">ɫ</a>
+<a onClick="sT('ɬ');" class="st">ɬ</a>
+<a onClick="sT('ɮ');" class="st">ɮ</a>
+<a onClick="sT('ɭ');" class="st">ɭ</a>
+<a onClick="sT('ʟ');" class="st">ʟ</a>
+<a onClick="sT('m');" class="st">m</a>
+<a onClick="sT('ɱ');" class="st">ɱ</a>
+<a onClick="sT('n');" class="st">n</a>
+<a onClick="sT('ɳ');" class="st">ɳ</a>
+<a onClick="sT('ɲ');" class="st">ɲ</a>
+<a onClick="sT('ŋ');" class="st">ŋ</a>
+<a onClick="sT('ɴ');" class="st">ɴ</a>
+<a onClick="sT('p');" class="st">p</a>
+<a onClick="sT('q');" class="st">q</a>
+<a onClick="sT('r');" class="st">r</a>
+<a onClick="sT('ɹ');" class="st">ɹ</a>
+<a onClick="sT('ɾ');" class="st">ɾ</a>
+<a onClick="sT('ɽ');" class="st">ɽ</a>
+<a onClick="sT('ɻ');" class="st">ɻ</a>
+<a onClick="sT('ɺ');" class="st">ɺ</a>
+<a onClick="sT('ʁ');" class="st">ʁ</a>
+<a onClick="sT('ʀ');" class="st">ʀ</a>
+<a onClick="sT('s');" class="st">s</a>
+<a onClick="sT('ʂ');" class="st">ʂ</a>
+<a onClick="sT('ɕ');" class="st">ɕ</a>
+<a onClick="sT('ʃ');" class="st">ʃ</a>
+<a onClick="sT('t');" class="st">t</a>
+<a onClick="sT('ʈ');" class="st">ʈ</a>
+<a onClick="sT('ts');" class="st">ts</a>
+<a onClick="sT('tɕ');" class="st">tɕ</a>
+<a onClick="sT('tʃ');" class="st">tʃ</a>
+<a onClick="sT('v');" class="st">v</a>
+<a onClick="sT('ⱱ');" class="st">ⱱ</a>
+<a onClick="sT('ʋ');" class="st">ʋ</a> 
+<a onClick="sT('w');" class="st">w</a>
+<a onClick="sT('ʍ');" class="st">ʍ</a>
+<a onClick="sT('x');" class="st">x</a>
+<a onClick="sT('ɣ');" class="st">ɣ</a>
+<a onClick="sT('χ');" class="st">χ</a>
+<a onClick="sT('ʎ');" class="st">ʎ</a>
+<a onClick="sT('z');" class="st">z</a>
+<a onClick="sT('ʐ');" class="st">ʐ</a>
+<a onClick="sT('ʑ');" class="st">ʑ</a>
+<a onClick="sT('ʒ');" class="st">ʒ</a>
+<a onClick="sT('θ');" class="st">θ</a>
+<a onClick="sT('ð');" class="st">ð</a>
+<a onClick="sT('ʔ');" class="st">ʔ</a>
+<a onClick="sT('ʡ');" class="st">ʡ</a>
+<a onClick="sT('ʕ');" class="st">ʕ</a>
+<a onClick="sT('ʢ');" class="st">ʢ</a>
+<a onClick="sT('ʘ');" class="st">ʘ</a>
+<a onClick="sT('ǀ');" class="st">ǀ</a>
+<a onClick="sT('ǃ');" class="st">ǃ</a>
+<a onClick="sT('ǂ');" class="st">ǂ</a>
+<a onClick="sT('ǁ');" class="st">ǁ</a>
+
+<br><b>All vowels:</b> <a onClick="sTv('a');" class="st">a</a>
+<a onClick="sTv('æ');" class="st">æ</a>
+<a onClick="sTv('ɑ');" class="st">ɑ</a>
+<a onClick="sTv('ɒ');" class="st">ɒ</a>
+<a onClick="sTv('ɒ̈');" class="st">ɒ̈</a>
+<a onClick="sTv('ä');" class="st">ä</a>
+<a onClick="sTv('ɐ');" class="st">ɐ</a>
+<a onClick="sTv('e');" class="st">e</a>
+<a onClick="sTv('ɛ');" class="st">ɛ</a>
+<a onClick="sTv('ɜ');" class="st">ɜ</a>
+<a onClick="sTv('ɞ');" class="st">ɞ</a>
+<a onClick="sTv('ə');" class="st">ə</a>
+<a onClick="sTv('i');" class="st">i</a>
+<a onClick="sTv('ɨ');" class="st">ɨ</a>
+<a onClick="sTv('ɪ');" class="st">ɪ</a>
+<a onClick="sTv('ɪ̈');" class="st">ɪ̈</a>
+<a onClick="sTv('y');" class="st">y</a>
+<a onClick="sTv('ʏ');" class="st">ʏ</a>
+<a onClick="sTv('ø');" class="st">ø</a>
+<a onClick="sTv('ɘ');" class="st">ɘ</a>
+<a onClick="sTv('ɵ');" class="st">ɵ</a>
+<a onClick="sTv('œ');" class="st">œ</a>
+<a onClick="sTv('ɶ');" class="st">ɶ</a>
+<a onClick="sTv('ɤ');" class="st">ɤ</a>
+<a onClick="sTv('o');" class="st">o</a>
+<a onClick="sTv('ɔ');" class="st">ɔ</a>
+<a onClick="sTv('u');" class="st">u</a>
+<a onClick="sTv('ʉ');" class="st">ʉ</a>
+<a onClick="sTv('ʊ');" class="st">ʊ</a>
+<a onClick="sTv('ʊ̈');" class="st">ʊ̈</a>
+<a onClick="sTv('ɯ');" class="st">ɯ</a>
+<a onClick="sTv('ʌ');" class="st">ʌ</a>
+
+<p><b>Consonant diacritics:</b> <a onClick="sTD('ʰ');" class="st">aspirated</a> | <a onClick="sTD('̪');" class="st">dental</a> | <a onClick="sTD('ʼ');" class="st">ejective</a> | <a onClick="sTD('ʷ');" class="st">labialized</a> | <a onClick="sTD('̃');" class="st">nasal</a> | <a onClick="sTD('ʲ');" class="st">palatalized</a> | <a onClick="sTD('ˠ');" class="st">velarized</a> | <a onClick="sTD('̥');" class="st">voiceless</a>
+
+<br><b>Vowel diacritics:</b> <a onClick="sTvD('ː');" class="st">long</a> | <a onClick="sTvD('̞');" class="st">lowered</a> | <a onClick="sTvD('̃');" class="st">nasal</a> | <a onClick="sTvD('̝');" class="st">raised</a>
+
+<br>
+</div>
+
+<p><a id="displayText3" href="javascript:toggle3();"><mon>Show more options</mon></a>
+<div id="toggleText3" style="display: none">
+<p><b>Use seed</b>: <input type="text" class="inpo" autocorrect="off" autocapitalize="off" spellcheck="false" id="seeder" value="" size="45"> <a href="#seed-pop"><img class="q"></a>
+
+<br>
+<p><span class="toggle">
+<input type="checkbox" id="wst" />
+<label for="wst">Word structure</label></span>
+<p>Enter permissible consonants and consonant clusters here. Note, this feature overrides Custom phonemes above.
+<p><b>Word initial consonants</b>: <input type="text" class="inpo" autocorrect="off" autocapitalize="off" spellcheck="false" id="wic" value="" size="65" disabled="disabled"><br>
+<b>Mid-word consonants</b>: <input type="text" class="inpo"  autocorrect="off" autocapitalize="off" spellcheck="false" id="mwc" value="" size="65" disabled="disabled"><br>
+<b>Word final consonants</b>: <input type="text" class="inpo"  autocorrect="off" autocapitalize="off" spellcheck="false" id="wfc" value="" size="65" disabled="disabled"><br>
+<b>Vowels</b>: <input type="text" autocorrect="off" class="inpo"  autocapitalize="off" spellcheck="false" id="cusvow2" value="" size="65" disabled="disabled"><br>
+<a onClick="ful('b d f h j k kʰ l m n p pʰ s sz t tʰ ts tsz tsʰ tsʰz tɕ tɕɥ tɕʰ tɕʰɥ w x ŋ ɕ ɕɥ ʂ ʂʐ ʈʂ ʈʂʐ ʈʂʰ ʈʂʰʐ ʐ', 'n', 'l n nʔ', 'a au aɪ e ei eɪ i ia iɛ iː ie ioʊ iu iɑ iɑʊ iɛ iʊ o ou oʊ u ua uː uaɪ ueɪ uɑ uɔ uə y yi yo yœ yɛ œː ɐ ɐi ɐu ɑ ɑʊ ɑː ɔː ə ɛ ɛː ɤ ɨ ɪ ɵ ʊ œ');" class="st">Chinese</a> | 
+<a onClick="ful('b bl br d dr f j k kl kr l m n p pl pr r s sl sp spr st sx t tʋ v vr z ɣ ɣr ɦ ʋ', 'b bl br d fd k kt l lk lp lst lɣ lʃ m md n nd ns nz p r rd rk rst rsx rt rv rɣ rɦ s st sx t tj tz v vr xt z ŋ ŋk ɣ ɣr ɦ ʋ', 'f ft k kt l lfs lp ls lt m ms mt n ns nt nts p pt r rk rkt rst rt s st t ts x xt z ŋ ŋk ŋkt', 'aː eː i iu iː oː u ui uː y yu yː øː œy ɑ ɑu ɔ ɔi ə ɛ ɛi ɛi ɛɪ ɪ ɪː ʏ');" class="st">Dutch</a> | 
+<a onClick="ful('b bɹ d dj dʒ f fj fɹ h hw j k kj kw kɹ l m n nj p pl pɹ s sm sp st t tɹ tʃ v w ð g gɹ ɹ ʃ ʍ θ θɹ', 'b bl d f ft fɹ h k l ldɹ lm ls lw lɹ m mb ms mθ n nd ndɹ nl ns nt ntɹ nɹ p pl s st stʃ t ts tw tʃ v w z zn ð ŋgl g ɹ θ', 'b d dz dʒ f ft hw k ks kst kt l ld lf lp lt lvz m md mz n nd ndz nst nt ntʃ nz p ps pt s skt st t ts tʃ v vd z ð ŋ ŋk ŋz g ɹ ʃ θ', 'aɪ aʊ eɪ i iə iː oː u uː æ ɑː ɒ ɔ ɔɪ ɔː ə əʊ ɛ ɛː ɜː ɪ ɪə ʊə ʌ');" class="st">English</a> | 
+<a onClick="ful('h j k l m n p r s t ʋ', 'd h hd ht k kk ks l lj lk lkk ll lm lpp lss lt ltt lv m mm mpp n nkk nn ns nss nt ntt p pp r rkk rpp rss rt rtt s sk ss st t tk ts tt v ʋ', 'n s t', 'e ei ei eæ eː i ie iɑ iː o oi oɑ oː u uo uo uɑ uː y yː æ æe æi æi æy æy æː ø ɑ ɑi ɑi ɑu ɑː');" class="st">Finnish</a> | 
+<a onClick="ful('b bj bʁ d dw dʁw f fw fʁ k kw kʁ kʁw l lj lw lɥ m mj mw n p pl pw pɥ pʁ s sw sɥ sʁ t tʁ tʁw v vj vw vʁ g gʁ ʁ ʁj ʃ ʃw ʒ ʒɥ', 'b bl d dɥ f j k kn ksj kspl kt ktɥ l lj lm lɥ lʒ m mj n p pt pɥ s sj stj t tfw tɥ v vw vʁ z zj g gz gʁ ʁ ʁfw ʁj ʁnj ʁs ʁt ʁv ʁʃ ʃ ʒ d f k ksj p s sɥ t v vj', 'bl bʁ d dʁ fʁ j k l lk lʒ m n p pʁ s st t ts tʁ v vʁ z ɲ ʁ ʁm ʁs ʁsk ʁt ʁʃ ʒ bʁ d dʁ k pl s t tʁ', 'a e i o u y ø œ œ̃ ɑ ɑ̃ ɔ ɔ̃ ə ɛ ɛi ɛ̃');" class="st">French</a> | 
+<a onClick="ful('b bl br d dʁ dʒ f fʁ h j k kl l m n p pʁ s t ts ts tsv v z g gl gʁ ʀ ʁ ʃ ʃn ʃpʁ ʃt ʔ', 'b bl d f h k kt l lf lt lz m n nd nt ntl nts nz r rt s st sç t ts tv tç tst x z ç çt çtʰ ŋ ŋk g ʀ ʁ ʁb ʁdn ʁkl ʁt ʁg χ', 'f k kt l lpst ls lst lt m mt n ns nst nt p pt pf r s st t ts tst x xst xt ç çt çts ŋ ŋk ŋs ŋst g ʁ ʁl ʁn ʁst ʁt ʁç', 'a aɪ aʊ aʊ aː e eː i iː o oː u uː yː øː œ ɐ ɔ ɔɪ ɔʏ ɔʏ ə ɛ ɛɐ ɛɐ ɛː ɪ ʊ ʏ');" class="st">German</a> | 
+<a onClick="ful('b bw d dʒ dʒ f k kw l m mj n nj nw p pj pr r s sj sk st str stʃ t tr tʃ v vj w gr gw ʎ', 'b bbj d ddʒ dr dʒ ff j k kkj kkw l lk ll lt ltr m mb mp n nd ndʒ nk nkw nn nsj nt ntr nts p pp r rd rj rk rl rn rr rt rts ss st str t tt ttsj ttʃ tts tʃ tʃ v z g ɲ ɲɲ ʃʃ ʎ ʎʎ', 'j l n r', 'a ai au aʊ aː e ei eː i ia io iː o oi u ue ui uː ɔ ɛ ɛi ɛː');" class="st">Italian</a> | 
+<a onClick="ful('b ch d dj f h j k m n p r s sh t ts ts tɕ ç ɕ g ɲ ɾ', 'b bj d k m n nt nɾ p r s t ŋk ɕ g ɰs ɴd ɾ', 'n ɴ', 'a au ai aɯ aː e eu eː i o oː u uː y ə ɨ ɯ');" class="st">Japanese</a> | 
+<a onClick="ful('h j k kj kw kx kʰ m mj mw n p pj pʰ pʰj s sʰ t tʰ tɕ tɕʰ w x ç çj ɕ ɕʰ ɰ ɲj ɸw ɸʷ', 'b d dʑ j kç kʰ kpʰ m md mdʑ mpʰj mɕʰ n nb nd ndʑ nkx nn nsʰ ntʰ ntɕʰ nɕʰ ng ngj nɦ nβw sʰ tʰ tɕʰ w ŋ ŋb ŋj ŋm ŋn ŋtʰ ŋɕʰ ŋg ŋɦ ŋɲj ŋʝj ŋβw ɕʰ g ɦ ɭb ɭd ɭkç ɭɭ ɭʎ ɭʎj ɲj ɾ ɾj ɾɦ ʝ β k', 'm n p t ŋ ɭ', 'a ai ao au aɯ aː e eu eː i iʌ iː o oː oi u uʌ uː ɘː ɛ ɯ ɯː ʌ');" class="st">Korean</a> | 
+<a onClick="ful('b d dʒ dʒ f k kl kw kɾ l m n p pɾ s t tɾ tʃ v g gɾ ʀ ʁ ʁj ʃ ʃt ʎ ʒ', 'b bl bɾ d f j jt jz jð jɲ jʃ k l lg m n p s sk st sw t tɾ tʃ v w wv wz z zdʒ ð g gw ɣ ɫk ɫm ɫt ɫg ɫɣ ɲ ɹd ɹs ɹt ɾ ɾd ɾk ɾm ɾp ɾt ɾð ʁ ʁk ʁm ʃ ʃk ʃp ʃt ʎ ʒ ʒm ntʃ β βɾ χt', 'j js jʃ s w ws wʃ ɫ ɾ ʃ', 'a ai e eu i ia iu iɐ iɐ̃ o oɐ u uɐ ɐ ɐ̃ ɔ ə ɛ ɛu ɨ ɪ ʊ');" class="st">Portuguese</a> | 
+<a onClick="ful('b bʲ d dlʲ dr dv dvʲ dʲ fsʲ ft j k knʲ kt lʲ m mn mʲ n nʲ p plʲ pr prʲ pʲ r rʲ s sk sl sm sn spr sr st str sv svʲ sʲ t trʲ tv tʲ tɕ v vdr vmʲ vrʲ vzglʲ vzʲ vʲ x z zn zʲ zʲdʲ ɕ g gdʲ gl ʂt ʐ ʐd', 'b bʲ d dn dʲ dʲnʲ fsʲ j jn jtʲ k kn kt kʲ l ln lg lʐn lʲ lʲk lʲzʲ lʲʂ m mlʲ mn mnʲ mʲ n nʲ nʲɕ nʲgʲ pr pɕ pʲ r rn rv rʲ s sk skv skʲ sm st str sʲ sʲtʲ t tr trʲ tvʲ tʲ ts tɕ tɕtʲ v vd vn vʲ x z zn zvʲ g gd ʂ ʂl ʂt ʐ ʐd ʐn', 'j k l lʲ m n nʲ p r rʲ s sʲ sʲtʲ t tʲ ts tɕ x zʲnʲ ʂ', 'a e i o u æ ɐ ə ɛ ɨ ɪ ɵ ʉ ʊ');" class="st">Russian</a> | 
+<a onClick="ful('b bj bw d f fw k kj kw kɾ l lw m mj mw n nw p pw pɾ r s sj sw t tj tɾ tʃ x g gɾ ʎ ʝ β θ θj', 'b bl bɾ d dj f j k l lt lgj lβ m mbj mbɾ mm mp mpɾ n nd nk nt ntr ntɾ ng ngr nθ p r rk rp rt s sd skw sm spw st stɾ tɾ tʃ x ð ðr ŋk ŋg g gt gw ɣ ɲ ɾ ɾd ɾj ɾk ɾs ɾt ɾð ʎ ʝ β θ θj', 'd j l n r s ð ɾ θ', 'a ai ao e ea eo i ia io o oi u');" class="st">Spanish</a>
+
+<form class="gForm" id="sForm">
+<b>Stress pattern</b>: <a href="#stress-pop"<img class="q"></a>
+<br><input type="radio" name="stress_rb" value="randoms" checked > Random 
+<br><input type="radio" name="stress_rb" value="firsts" > Initial — stress is on the first syllable
+<br><input type="radio" name="stress_rb" value="secons" > Second — stress is on the second syllable
+<br><input type="radio" name="stress_rb" value="penuls" > Penultimate — stress is on the penultimate (second from the right) syllable
+<br><input type="radio" name="stress_rb" value="ultims" > Ultimate — stress is on the ultimate (last) syllable
+<br><input type="radio" name="stress_rb" value="nofixs"  > No fixed stress 
+</form> 
+
+<p><span class="toggle">
+<input type="checkbox" id="orthy" />
+<label for="orthy">Custom orthography</label></span>
+<p>
+
+<p><textarea id="orthog" rows="17" cols="20" autocapitalize="off" spellcheck="false" style="float:left; margin-right: 20px; margin-top: 10px;" disabled></textarea>
+</p>
+<div>
+Define how IPA symbols turn into written symbols:
+<p>&emsp;&emsp;ʃ > <b>sh</b>
+<br>&emsp;&emsp;ŋ > <b>ng</b>
+<br>&emsp;&emsp;ne > <b>ネ</b>
+<p>This section supports <a href="https://www.vulgarlang.com/regex.html">RegEx</a> matching. This allows you to do cool things, like mimic English spelling:
+<p><b>&emsp;&emsp;^dʒ > j</b> = <i>dʒ</i> at the beginning of a word turns into <i>j</i>, as in <i>joke</i>
+<br><b>&emsp;&emsp;dʒ$ > ge</b> = <i>dʒ</i> at the end of a word turns into <i>ge</i>, as in <i>age</i>
+<br><b>&emsp;&emsp;o$ > ot</b> = <i>o</i> at end of word adds silent letter <i>t</i> (similar to French spelling)
+</div>
+<div style="clear: both; margin-top: 2cm;">
+
+<span class="toggle">
+<input type="checkbox" id="cusphonbut" />
+<label for="cusphonbut">Custom phonological rules</label></span> <a href="#phr-pop"<img class="q"></a>
+
+<p><textarea id="cusphonology" rows="11" cols="25" autocapitalize="off" spellcheck="false" style="float:left; margin-right: 20px; margin-top: 10px;" disabled></textarea>
+</p>
+<p>Define phonological rules. This section uses standard phonological rule notation, eg:
+<p><b>&emsp;&emsp;e > i / _g</b> = <i>e</i> turns into <i>i</i> before <i>g</i>
+<br><b>&emsp;&emsp;j > g / #_</b> = <i>j</i> turns into <i>g</i> at the beginning of a word
+<br><b>&emsp;&emsp;{p,b} > m / V_V</b> = <i>p</i> or <i>b</i> turns into <i>m</i> between vowels
+<br><b>&emsp;&emsp;C > Ø / _#</b> = all consonants are deleted at the end of a word
+</div>
+<div style="clear: both;">
+<br>
+
+<p>Remove dipthong and affricate diacritics from IPA (creates neater IPA output): <input type="checkbox" id="dipaf" checked>
+</div>
+<form class="gForm" id="gForm">
+<b>Number of genders</b>: <input type="radio" name="gender_rb" value="randomg" checked > Random 
+  <input type="radio" name="gender_rb" value="noneg"  > None 
+  <input type="radio" name="gender_rb" value="twog" > 2 
+  <input type="radio" name="gender_rb" value="threeg" > 3  
+  <input type="radio" name="gender_rb" value="fourg" > 4 
+  <input type="radio" name="gender_rb" value="fiveg" > 5
+</form> 
+<form class="cForm" id="cForm">
+<b>Number of case markers</b>: <input type="radio" name="case_rb" value="randomc" checked > Random 
+  <input type="radio" name="case_rb" value="nonec"  > None 
+  <input type="radio" name="case_rb" value="twoc" > 2 
+  <input type="radio" name="case_rb" value="threec" > 3  
+  <input type="radio" name="case_rb" value="fourc" > 4 
+  <input type="radio" name="case_rb" value="fivec" > 5
+</form> 
+
+<br>
+<span class="toggle">
+<input type="checkbox" id="xwords" />
+<label for="xwords">Add more words</label></span>
+
+<p><textarea id="xwordys" rows="8" cols="38" autocapitalize="off" spellcheck="false"style="float:left; margin-right: 20px; margin-top: 10px;" disabled></textarea>
+
+<p>Enter extra words to be generated, in the format <b>word(s)|part-of-speech</b> (i.e, noun, adjective, verb, etc.):
+<p>&emsp;&emsp;ethereal|adj
+<br>&emsp;&emsp;conlang, constructed language|n
+<div style="clear: both;">
+<br>
+<b>Derived words:</b>
+<br><textarea id="xders" rows="8" cols="38" autocapitalize="off" spellcheck="false" style="float:left; margin-right: 20px; margin-top: 10px;" disabled></textarea>
+<p>Enter derived words as <b>old word > new word|affix type</b>:
+<p>&emsp;&emsp;ethereal > ethereality|adj-n
+</div>
+<div style="clear: both;">
+<br><b>Click to add affix type to end of line</b>:<br>
+<a onClick="pos('|n-adj');" class="st">Noun to adjective</a> | 
+<a onClick="pos('|adj-n');" class="st">Adjective to noun</a> | 
+<a onClick="pos('|n-v');" class="st">Noun to verb</a> | 
+<a onClick="pos('|v-n');" class="st">Verb to noun</a> | 
+<a onClick="pos('|adj-adv');" class="st">Adjective to adverb</a> | 
+<a onClick="pos('|xs');" class="st">One who Xs (e.g. paint → painter)</a> | 
+<a onClick="pos('|place');" class="st">Place where (e.g. wine → winery)</a> | 
+<a onClick="pos('|dim');" class="st">Diminutive</a> | 
+<a onClick="pos('|aug');" class="st">Augmentative</a>
+
+
+</div>
+<div style="clear: both;"><br><br>
+<button class="button0 button10" onclick="latexer()">HTML output</button> <button class="button0 button10" onclick="tumblr()">Tumblr Markdown</button><br>
+<div id="htmllatex" style="display: none">
+
+<textarea id="latex" rows="15" cols="60">
+
+</textarea><br><br>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display:none;" id="loader">
+  <div class="cube1"></div>
+  <div class="cube2"></div>
+</div>
+<div style="display:none;" id="demo" ></div>
+<div id="englishSort" ></div>
+<p>Full Version 6.6.1<br>Created and designed in Sydney, Australia.<br>Vulgarlang.com © 2017.
+</div>
+
+<div id="error-pop" class="olay">
+	<div class="popup">
+		<h2>Error</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+There are not enough sounds in your language to generate a sufficient set of unique of words! Enter more consonants and/or vowels or turn off custom options.
+		</div>
+	</div>
+</div>
+
+<div id="phoneme-pop" class="olay">
+	<div class="popup">
+		<h2>Phonemes</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			Phonemes are the individual sounds of a language. This is not the same as the spelling of a language (which is the orthography). Phonemes are represented by the <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">International Phonetic Alphabet</a> (IPA), which is used to transcribe the exact pronunciation of words in all languages worldwide. IPA is written between forward slashes.
+			<p>Becoming familiar with some of the IPA sounds will enhance your understanding of the languages generated by Vulgar.
+		</div>
+	</div>
+</div>
+<div id="seed-pop" class="olay">
+	<div class="popup">
+		<h2>Seed numbers</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			The seed number can be used to recover a generated language. If you create something you like in the free version, you can recover its full output in the premium version using its seed number. If you just want something random, leave it blank. There are some important details to getting the seed number to co-operate: <br><br>1. If you use any custom phonemes, to get the same output you must re-enter those some phonemes back in the same fields, and in the exact same order. Otherwise the program will output what the seed number would have generated if it was allowed to randomly pick its own phonemes. Or, in the case where the phonemes aren't in the same order, it will apply different frequencies to those phonemes. <br><br>2. Different browsers give different outputs due to the way each browser rounds off long decimals numbers. This shouldn't be a problem if you are trying to recover a language between the free and premium version so long as you use the same browser, but unfortunately it means if you try to share your language with someone you can't be sure that they will see the same thing.
+		</div>
+	</div>
+</div>
+<div id="syst-pop" class="olay">
+	<div class="popup">
+		<h2>Syllable structure</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			Syllable structure refers to how many consonants are permitted to appear on either side of the vowel. A syllable structure of (C)V means the syllable must have one vowel and an optional consonant at the beginning. It permits patterns such as <b>tito</b>, <b>raleo</b>, <b>ala</b>. Languages with this kind of simple structure include Swahili and Fijian. <p>A syllable structure such as (C)(C)(C)V(C)(C) would allow more complex words such as <b>strips</b>, <b>trainers</b>. Most European languages have more complex structures.
+		</div>
+	</div>
+</div>
+
+<div id="stress-pop" class="olay">
+	<div class="popup">
+		<h2>Stress pattern</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			Stress pattern refers to which syllable in a word gets emphasis. English has no exact fixed pattern; the stress can fall on any syllable: <b>VIGorous</b> (first), <b>emPLOYment</b> (second to last), <b>hoTEL</b> (last). Most of the world's major languages have no fixed pattern, however some do. Finnish words have stress on the first syllable. Greek is second to last syllable. Persian has it on the last syllable.
+			<p>IPA uses the ˈ symbol before the syllable to represent primary stress. The word <b>siho</b> /si&nbsp;ˈho/ would be pronounced siHO.
+		</div>
+	</div>
+</div>
+
+<div id="phr-pop" class="olay">
+	<div class="popup">
+		<h2>Phonological rules</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			All languages have phonemes that change slightly (or sometimes dramatically) based on the effects of other phonemes around it. These are known as <b>phonological processes</b>. We express them in writing as <i>phonological rules</i>, eg: <b>e > i / _g</b> = <i>e</i> turns into <i>i</i> before <i>g</i>.
+			<p>For a more in depth lesson on phonological rules, and the kinds of phonological rules that exist <a href="https://www.vulgarlang.com/guide-to-linguistics.html#phonr" target="_blank">click here</a>.
+		</div>
+	</div>
+</div>
+
+<div id="dip-pop" class="olay">
+	<div class="popup">
+		<h2>Diphthongs</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			A diphthong is when two vowel sounds form one syllable. English has various diphthongs. For example, the word "light" /laɪt/ is comprised of /a/ and /ɪ/, but is percieved as one syllable.
+		</div>
+	</div>
+</div>
+
+<div id="adp-pop" class="olay">
+	<div class="popup">
+		<h2>Adpositions</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			 Adpositions are words that express spatial or temporal relations <i>(in, on, under, towards, before)</i> or mark various semantic roles <i>(of, for)</i>. When adpositions come before the noun phrase they are called <b>prepositions</b>, i.e. in English: <i>on the table</i>. If they come after the noun phrase they are called <b>postpositions</b>. Languages that use postpositions include Chinese and Turkish.
+		</div>
+	</div>
+</div>
+
+<div id="art-pop" class="olay">
+	<div class="popup">
+		<h2>Articles</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			 <b>Articles</b> are the words <i>the</i>, <i>a</i>, and <i>some</i>. The <b>definite article</b>, <i>the</i>, is used to refer to something whose reference is already known. <b>Indefinite articles</b>, <i>a</i> and <i>some</i>, are used to refer to new things in the discourse. In English, the indefinite article changes to match the plurality of the noun (a cat vs. some cats) however the definite does not. In other languges, articles may change to match grammatical properties of nouns based on a complex matrix of number (singulgar, plural) X by gender (masculine, feminine, neuter, etc.) X by case (nominative, accusative, etc.).
+			 <p>For an in depth explanation of <b>gender</b> <a href="https://www.vulgarlang.com/gender.html" target="_blank">click here</a>. For an explanation of <b>case</b> <a href="https://www.vulgarlang.com/case.html" target="_blank">click here</a>.
+		</div>
+	</div>
+</div>
+
+<div id="nmor-pop" class="olay">
+	<div class="popup">
+		<h2>Morphology</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			 <b>Morphology</b> is the changing of a word to express various grammatical properties. In English, the plural marker "s" is an example of morphology. Some other languages change nouns based on a complex matrix of number (singulgar, plural) X by gender (masculine, feminine, neuter, etc.) X by case (nominative, accusative, etc.).<p>For an in depth explanation of <b>gender</b> <a href="https://www.vulgarlang.com/gender.html" target="_blank">click here</a>. For an explanation of <b>case</b> <a href="https://www.vulgarlang.com/case.html" target="_blank">click here</a>.
+		</div>
+	</div>
+</div>
+
+<script src="https://www.vulgarlang.com/vuldatav06_61.js"></script>
+<script src="https://www.vulgarlang.com/vulv06_61.js"></script><br>
+<script>
+var close = document.getElementsByClassName("closebtn");
+var pio;
+
+for (pio = 0; pio < close.length; pio++) {
+    close[pio].onclick = function(){
+        var div = this.parentElement;
+        //div.style.opacity = "0";
+        setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
+}
+</script>
+
+</body>
+</html>
